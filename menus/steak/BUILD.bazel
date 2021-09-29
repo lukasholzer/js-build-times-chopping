@@ -1,0 +1,6 @@
+load("//tools:jest.bzl", "jest_test")
+
+jest_test(
+    name = "test",
+    srcs = glob(["**/*.test.js"]),
+)

@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "WORKSPACE": "Starlark",
+    ".bazelrc*": "Starlark"
+  }
+}
