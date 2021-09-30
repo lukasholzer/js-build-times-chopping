@@ -81,8 +81,16 @@ build --bes_results_url=https://app.buildbuddy.io/invocation/
 build --bes_backend=grpcs://cloud.buildbuddy.io
 build --remote_cache=grpcs://cloud.buildbuddy.io
 build --remote_timeout=3600
-; build --remote_executor=grpcs://cloud.buildbuddy.io
 build --remote_header=x-buildbuddy-api-key=l8A8H15cwHabi4Qc2MbN
+
+build --build_metadata=REPO_URL=https://github.com/lukasholzer/js-build-times-chopping
+build --workspace_status_command=$(pwd)/tools/workspace_status.sh
+
+# Flags for remote build execution
+build --remote_executor=grpcs://cloud.buildbuddy.io
+build --host_platform=@buildbuddy_toolchain//:platform
+build --platforms=@buildbuddy_toolchain//:platform
+build --extra_execution_platforms=@buildbuddy_toolchain//:platform
 
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
