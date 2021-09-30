@@ -2,6 +2,7 @@ load("@npm//@bazel/esbuild:index.bzl", "esbuild")
 load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
 load("@npm//history-server:index.bzl", "history_server")
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "pkg_web")
+load("//tools:jest.bzl", "jest_test")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -9,7 +10,7 @@ ts_project(
     name = "app",
     srcs = glob(
         ["**/*.ts*"],
-        exclude = ["*.test.ts"],
+        exclude = ["**/*.test.ts"],
     ),
     source_map = False,
     tsconfig = ":tsconfig_app",
@@ -46,6 +47,22 @@ history_server(
     name = "serve",
     data = [":devapp"],
     templated_args = ["-a $$(rlocation $(rootpath :devapp))"],
+)
+
+ts_project(
+    name = "tests",
+    srcs = glob(["**/*.test.ts"]),
+    declaration = False,
+    tsconfig = ":tsconfig_test",
+    deps = [
+        "@npm//@types/jest",
+        "@npm//@types/node",
+    ],
+)
+
+jest_test(
+    name = "unit_tests",
+    srcs = [":tests"],
 )
 
 ts_config(
