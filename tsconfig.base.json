@@ -15,7 +15,13 @@
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@viennajs/menus/*": [
+        "bazel-out/k8-fastbuild/bin/menus/*",
+        "bazel-out/darwin-fastbuild/bin/menus/*",
+        "bazel-out/x64_windows-fastbuild/bin/menus/*"
+      ]
+    }
   },
   "exclude": ["node_modules", "bazel-out", "dist"]
 }

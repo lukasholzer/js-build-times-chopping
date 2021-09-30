@@ -1,4 +1,23 @@
 load("//tools:jest.bzl", "jest_test")
+load("@build_bazel_rules_nodejs//:index.bzl", "js_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+
+package(default_visibility = ["//:__subpackages__"])
+
+ts_project(
+    name = "compile",
+    srcs = glob(["**/*.ts"]),
+    declaration = True,
+    extends = "//:tsconfig.base.json",
+    source_map = True,
+    tsconfig = ":tsconfig.json",
+)
+
+js_library(
+    name = "pizza",
+    package_name = "@viennajs/menus/pizza",
+    deps = [":compile"],
+)
 
 jest_test(
     name = "test",

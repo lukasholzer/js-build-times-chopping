@@ -15,6 +15,7 @@ ts_project(
     source_map = False,
     tsconfig = ":tsconfig_app",
     deps = [
+        "//menus/pizza",
         "@npm//preact",
     ],
 )
