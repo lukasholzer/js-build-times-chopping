@@ -25,6 +25,10 @@ npm_install(
     package_lock_json = "//:package-lock.json",
 )
 
+load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "esbuild_repositories")
+
+esbuild_repositories()
+
 # Add the buildbuddy dependencies that are needed for remote build execution
 load("@io_buildbuddy_buildbuddy_toolchain//:deps.bzl", "buildbuddy_deps")
 

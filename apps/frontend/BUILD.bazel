@@ -1,0 +1,67 @@
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
+load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
+load("@npm//history-server:index.bzl", "history_server")
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "pkg_web")
+
+package(default_visibility = ["//:__subpackages__"])
+
+ts_project(
+    name = "app",
+    srcs = glob(
+        ["**/*.ts*"],
+        exclude = ["*.test.ts"],
+    ),
+    source_map = False,
+    tsconfig = ":tsconfig_app",
+    deps = [
+        "@npm//preact",
+    ],
+)
+
+copy_to_bin(
+    name = "styles",
+    srcs = glob(["**/*.css"]),
+)
+
+esbuild(
+    name = "bundle",
+    entry_point = "src/main.tsx",
+    output = "main.bundle.js",
+    output_css = "main.bundle.css",
+    deps = [
+        ":app",
+        ":styles",
+    ],
+)
+
+pkg_web(
+    name = "devapp",
+    srcs = [
+        ":bundle",
+        ":index.html",
+    ],
+)
+
+history_server(
+    name = "serve",
+    data = [":devapp"],
+    templated_args = ["-a $$(rlocation $(rootpath :devapp))"],
+)
+
+ts_config(
+    name = "tsconfig_app",
+    src = ":tsconfig.app.json",
+    deps = [
+        ":tsconfig.json",
+        "//:tsconfig.base.json",
+    ],
+)
+
+ts_config(
+    name = "tsconfig_test",
+    src = ":tsconfig.test.json",
+    deps = [
+        ":tsconfig.json",
+        "//:tsconfig.base.json",
+    ],
+)
